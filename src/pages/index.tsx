@@ -1,7 +1,53 @@
-import { Typography } from "@mui/material";
+import { useEffect, useState } from "react";
 import Head from "next/head";
 
+import SendIcon from "@mui/icons-material/Send";
+import { Box, IconButton, InputAdornment, TextField } from "@mui/material";
+
 export default function Home() {
+  const [question, setQuestion] = useState("");
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [answer, setAnswer] = useState("");
+  const [typedAnswer, setTypedAnswer] = useState("");
+
+  const handleSendQuestion = async () => {
+    const response = await fetch(`/api/gpt?question=${question}`).then((res) =>
+      res.json()
+    );
+    setAnswer(response.content);
+  };
+
+  useEffect(() => {
+    let currentIndex = 0;
+    let typingTimer: ReturnType<typeof setTimeout>;
+
+    const typeAnswer = () => {
+      if (currentIndex < answer.length) {
+        setTypedAnswer(
+          (prevTypedAnswer) => prevTypedAnswer + answer[currentIndex]
+        );
+        currentIndex++;
+        typingTimer = setTimeout(typeAnswer, 50); // Adjust the typing speed here
+      }
+    };
+
+    const startTypingEffect = () => {
+      if (answer && answer !== typedAnswer) {
+        setTypedAnswer("");
+        currentIndex = 0;
+        typingTimer = setTimeout(typeAnswer, 50); // Start typing immediately
+      }
+    };
+
+    const clearTypingEffect = () => {
+      clearTimeout(typingTimer);
+    };
+
+    startTypingEffect();
+
+    return clearTypingEffect;
+  }, [answer]);
+
   return (
     <>
       <Head>
@@ -11,7 +57,43 @@ export default function Home() {
         <link rel='icon' href='/favicon.ico' />
       </Head>
       <main>
-        <Typography variant='h1'>123</Typography>
+        <Box
+          sx={{
+            height: "100vh",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: "1rem",
+            pb: "5rem",
+            px: "5rem",
+          }}
+        >
+          <TextField
+            label='Ask a question'
+            value={question}
+            onChange={(e) => setQuestion(e.target.value)}
+            multiline
+            sx={{ width: "500px" }}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position='end'>
+                  <IconButton onClick={handleSendQuestion}>
+                    <SendIcon />
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
+          />
+          <TextField
+            value={typedAnswer}
+            placeholder='Answer will be here'
+            multiline
+            sx={{ width: "500px" }}
+            disabled
+            minRows={7}
+          />
+        </Box>
       </main>
     </>
   );

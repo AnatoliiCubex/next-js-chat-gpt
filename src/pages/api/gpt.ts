@@ -7,18 +7,21 @@ type Data = {
 };
 
 export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse<Data>
+  request: NextApiRequest,
+  response: NextApiResponse<Data>
 ) {
+  const { question } = request.query;
+
   const completion = await openai.createChatCompletion({
     model: "gpt-3.5-turbo",
     messages: [
       {
         role: "user",
-        content: "Can you generate text for a meme related to JavaScript?",
+        content: question,
       },
     ],
   });
-  const response = completion.data.choices[0].message;
-  res.status(200).json(response);
+
+  const response_ = completion.data.choices[0].message;
+  response.status(200).json(response_);
 }
