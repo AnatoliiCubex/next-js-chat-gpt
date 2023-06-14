@@ -2,6 +2,10 @@ import React from "react";
 import { Swiper, SwiperSlide, useSwiper } from "swiper/react";
 import { Pagination, Navigation } from "swiper";
 
+import { IconButton } from "@mui/material";
+import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
@@ -16,7 +20,9 @@ const SwiperButtonNext = ({ children }: { children: React.ReactNode }) => {
 export const SliderPageComponent = () => {
   return (
     <div className={styles.slider}>
-      <button className='prevSlide'>←</button>
+      <IconButton>
+        <ArrowBackIosNewIcon className='prevSlide' />
+      </IconButton>
 
       <Swiper
         slidesPerView={5}
@@ -40,7 +46,9 @@ export const SliderPageComponent = () => {
         <SwiperSlide>Slide 9</SwiperSlide>
         <SwiperSlide>Slide 10</SwiperSlide>
       </Swiper>
-      <button className='nextSlide'>→</button>
+      <IconButton>
+        <ArrowForwardIosIcon className='nextSlide' />
+      </IconButton>
     </div>
   );
 };
