@@ -14,10 +14,8 @@ export const LayoutComponent: React.FC<PropsWithChildren> = ({ children }) => {
         <meta name='viewport' content='width=device-width, initial-scale=1' />
         <link rel='icon' href='/favicon.ico' />
       </Head>
-      <main className={styles.layout}>
-        <Sidebar />
-        {children}
-      </main>
+      <Sidebar />
+      <main className={styles.layout}>{children}</main>
     </>
   );
 };
