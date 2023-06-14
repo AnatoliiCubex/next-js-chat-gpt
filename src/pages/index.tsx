@@ -2,7 +2,13 @@ import { useEffect, useState } from "react";
 import Head from "next/head";
 
 import SendIcon from "@mui/icons-material/Send";
-import { Box, IconButton, InputAdornment, TextField } from "@mui/material";
+import {
+  Box,
+  IconButton,
+  InputAdornment,
+  TextField,
+  Typography,
+} from "@mui/material";
 
 export default function Home() {
   const [question, setQuestion] = useState("");
@@ -60,13 +66,11 @@ export default function Home() {
         <Box
           sx={{
             height: "100vh",
+            border: "2px dashed red",
             display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
             justifyContent: "center",
-            gap: "1rem",
-            pb: "5rem",
-            px: "5rem",
+            alignItems: "center",
+            pb: "4rem",
           }}
         >
           <TextField
@@ -74,7 +78,12 @@ export default function Home() {
             value={question}
             onChange={(e) => setQuestion(e.target.value)}
             multiline
-            sx={{ width: "500px" }}
+            sx={{
+              width: "500px",
+              position: "fixed",
+              bottom: "2rem",
+              zIndex: "2",
+            }}
             InputProps={{
               endAdornment: (
                 <InputAdornment position='end'>
@@ -85,14 +94,13 @@ export default function Home() {
               ),
             }}
           />
-          <TextField
-            value={typedAnswer}
-            placeholder='Answer will be here'
-            multiline
-            sx={{ width: "500px" }}
-            disabled
-            minRows={7}
-          />
+          <Typography
+            sx={{
+              width: "500px",
+            }}
+          >
+            {typedAnswer}
+          </Typography>
         </Box>
       </main>
     </>
