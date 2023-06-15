@@ -13,7 +13,6 @@ import styles from "./HomePage.module.scss";
 
 export const HomePageComponent = () => {
   const [question, setQuestion] = useState("");
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [answer, setAnswer] = useState("");
   const [typedAnswer, setTypedAnswer] = useState("");
 
@@ -57,18 +56,9 @@ export const HomePageComponent = () => {
   }, [answer]);
 
   return (
-    <Box
-      className={styles.homePage}
-      sx={{
-        border: "2px dashed red",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        pb: "4rem",
-      }}
-    >
+    <Box className={styles.homePage}>
       <TextField
-        label='Ask a question'
+        label='Send a message'
         value={question}
         onChange={(e) => setQuestion(e.target.value)}
         multiline
