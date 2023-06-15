@@ -8,6 +8,8 @@ import {
   ListItemIcon,
   ListItemText,
 } from "@mui/material";
+import AccountBoxIcon from "@mui/icons-material/AccountBox";
+import PersonIcon from "@mui/icons-material/Person";
 import AddIcon from "@mui/icons-material/Add";
 import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
 
@@ -16,17 +18,8 @@ import { sidebarHistoryData } from "./constants";
 
 export const SidebarComponent = () => {
   return (
-    <Box
-      component={"aside"}
-      className={styles.sidebar}
-      sx={{
-        overflow: "hidden",
-        "&:hover": {
-          overflow: "auto",
-        },
-      }}
-    >
-      <List sx={{ pt: 0 }}>
+    <Box component={"aside"} className={styles.sidebar}>
+      <List sx={{ py: 0 }}>
         <ListItem disablePadding>
           <ListItemButton>
             <ListItemIcon>
@@ -35,8 +28,20 @@ export const SidebarComponent = () => {
             <ListItemText primary='New chat' />
           </ListItemButton>
         </ListItem>
+      </List>
 
-        <Divider />
+      <Divider />
+
+      <List
+        sx={{
+          pt: 0,
+          overflowY: "hidden",
+          height: "100%",
+          "&:hover": {
+            overflowY: "auto",
+          },
+        }}
+      >
         {sidebarHistoryData.map((history) => (
           <React.Fragment key={history.id}>
             <ListItem>
@@ -57,6 +62,27 @@ export const SidebarComponent = () => {
             ))}
           </React.Fragment>
         ))}
+      </List>
+
+      <Divider />
+      <List sx={{ py: 0 }}>
+        <ListItem disablePadding>
+          <ListItemButton>
+            <ListItemIcon>
+              <PersonIcon sx={{ fontSize: "20px" }} />
+            </ListItemIcon>
+            <ListItemText primary='Upgrade to plus' />
+          </ListItemButton>
+        </ListItem>
+
+        <ListItem disablePadding>
+          <ListItemButton>
+            <ListItemIcon>
+              <AccountBoxIcon sx={{ fontSize: "20px" }} />
+            </ListItemIcon>
+            <ListItemText primary='youremail@gmail.com' />
+          </ListItemButton>
+        </ListItem>
       </List>
     </Box>
   );
