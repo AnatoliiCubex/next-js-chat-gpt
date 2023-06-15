@@ -1,0 +1,17 @@
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+  height: 100%;
+  max-height: 100vh;
+  background-color: rgba(32, 33, 35, 1);
+
+  * [class*="MuiListItemButton"] {
+    padding: 6px 16px;
+  }
+}
+
+.dateSmallText {
+  opacity: 0.7;
+  font-size: 0.75rem;
+}

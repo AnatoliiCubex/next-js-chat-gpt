@@ -9,6 +9,8 @@ import {
 } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 
+import styles from "./HomePage.module.scss";
+
 export const HomePageComponent = () => {
   const [question, setQuestion] = useState("");
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -16,6 +18,7 @@ export const HomePageComponent = () => {
   const [typedAnswer, setTypedAnswer] = useState("");
 
   const handleSendQuestion = async () => {
+    if (question.trim().length === 0) return;
     const response = await fetch(`/api/gpt?question=${question}`).then((res) =>
       res.json()
     );
@@ -54,47 +57,45 @@ export const HomePageComponent = () => {
   }, [answer]);
 
   return (
-    <div>
-      <Box
+    <Box
+      className={styles.homePage}
+      sx={{
+        border: "2px dashed red",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        pb: "4rem",
+      }}
+    >
+      <TextField
+        label='Ask a question'
+        value={question}
+        onChange={(e) => setQuestion(e.target.value)}
+        multiline
         sx={{
-          height: "100vh",
-          border: "2px dashed red",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          pb: "4rem",
+          width: "500px",
+          position: "fixed",
+          bottom: "2rem",
+          zIndex: 2,
+        }}
+        InputProps={{
+          endAdornment: (
+            <InputAdornment position='end'>
+              <IconButton onClick={handleSendQuestion}>
+                <SendIcon />
+              </IconButton>
+            </InputAdornment>
+          ),
+        }}
+      />
+      <Typography
+        sx={{
+          width: "500px",
         }}
       >
-        <TextField
-          label='Ask a question'
-          value={question}
-          onChange={(e) => setQuestion(e.target.value)}
-          multiline
-          sx={{
-            width: "500px",
-            position: "fixed",
-            bottom: "2rem",
-            zIndex: "2",
-          }}
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position='end'>
-                <IconButton onClick={handleSendQuestion}>
-                  <SendIcon />
-                </IconButton>
-              </InputAdornment>
-            ),
-          }}
-        />
-        <Typography
-          sx={{
-            width: "500px",
-          }}
-        >
-          {typedAnswer}
-        </Typography>
-      </Box>
-    </div>
+        {typedAnswer}
+      </Typography>
+    </Box>
   );
 };
 HomePageComponent.displayName = "HomePage";
