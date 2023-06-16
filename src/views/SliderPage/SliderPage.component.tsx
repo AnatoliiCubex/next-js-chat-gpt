@@ -35,16 +35,11 @@ export const SliderPageComponent = () => {
         loop={true}
         modules={[Pagination, Navigation]}
       >
-        <SwiperSlide>Slide 1</SwiperSlide>
-        <SwiperSlide>Slide 2</SwiperSlide>
-        <SwiperSlide>Slide 3</SwiperSlide>
-        <SwiperSlide>Slide 4</SwiperSlide>
-        <SwiperSlide>Slide 5</SwiperSlide>
-        <SwiperSlide>Slide 6</SwiperSlide>
-        <SwiperSlide>Slide 7</SwiperSlide>
-        <SwiperSlide>Slide 8</SwiperSlide>
-        <SwiperSlide>Slide 9</SwiperSlide>
-        <SwiperSlide>Slide 10</SwiperSlide>
+        {Array(10)
+          .fill(0)
+          .map((_, index) => (
+            <SwiperSlide key={index}>Slide {index + 1}</SwiperSlide>
+          ))}
       </Swiper>
       <IconButton>
         <ArrowForwardIosIcon className='nextSlide' />
