@@ -11,6 +11,7 @@ import SendIcon from "@mui/icons-material/Send";
 
 import { Chat } from "./HomePage.types";
 import styles from "./HomePage.module.scss";
+import classNames from "classnames";
 
 export const HomePageComponent = () => {
   const [question, setQuestion] = useState("");
@@ -20,17 +21,21 @@ export const HomePageComponent = () => {
 
   const handleSendQuestion = async () => {
     if (question.trim().length === 0) return;
+    const message = question;
+    setQuestion("");
+
     setChat((prev) => [
       ...prev,
       {
         id: prev.length + 1,
         sendBy: "user",
-        message: question,
+        message: message,
       },
     ]);
-    const response = await fetch(`/api/gpt?question=${question}`).then((res) =>
+    const response = await fetch(`/api/gpt?question=${message}`).then((res) =>
       res.json()
     );
+
     setAnswer(response.content);
     setChat((prev) => [
       ...prev,
@@ -75,16 +80,32 @@ export const HomePageComponent = () => {
 
   return (
     <Box className={styles.homePage}>
+      {chat.map((message) => (
+        <Box
+          key={message.id}
+          className={classNames(styles.messageContainer, {
+            [styles.sendByUser]: message.sendBy === "user",
+            [styles.sendByBot]: message.sendBy === "bot",
+          })}
+        >
+          <Typography className={styles.message}>{message.message}</Typography>
+        </Box>
+      ))}
+
+      <Box sx={{ height: { xs: "8rem", sm: "12rem" } }} />
+
       <TextField
-        label='Send a message'
+        placeholder='Send message'
         value={question}
         onChange={(e) => setQuestion(e.target.value)}
         multiline
         sx={{
-          width: "500px",
+          width: "100%",
+          maxWidth: "50rem",
           position: "fixed",
           bottom: "2rem",
           zIndex: 2,
+          backgroundColor: "rgba(64,65,79,1)",
         }}
         InputProps={{
           endAdornment: (
@@ -96,13 +117,6 @@ export const HomePageComponent = () => {
           ),
         }}
       />
-      {chat.map((message) => (
-        <Box key={message.id} className={styles.messageContainer}>
-          <Typography className={styles.message} sx={{}}>
-            {message.message}
-          </Typography>
-        </Box>
-      ))}
     </Box>
   );
 };
