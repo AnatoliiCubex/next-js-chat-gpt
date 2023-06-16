@@ -9,19 +9,37 @@ import {
 } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 
+import { Chat } from "./HomePage.types";
 import styles from "./HomePage.module.scss";
 
 export const HomePageComponent = () => {
   const [question, setQuestion] = useState("");
   const [answer, setAnswer] = useState("");
   const [typedAnswer, setTypedAnswer] = useState("");
+  const [chat, setChat] = useState<Chat>([]);
 
   const handleSendQuestion = async () => {
     if (question.trim().length === 0) return;
+    setChat((prev) => [
+      ...prev,
+      {
+        id: prev.length + 1,
+        sendBy: "user",
+        message: question,
+      },
+    ]);
     const response = await fetch(`/api/gpt?question=${question}`).then((res) =>
       res.json()
     );
     setAnswer(response.content);
+    setChat((prev) => [
+      ...prev,
+      {
+        id: prev.length + 1,
+        sendBy: "bot",
+        message: response.content,
+      },
+    ]);
   };
 
   useEffect(() => {
@@ -78,13 +96,13 @@ export const HomePageComponent = () => {
           ),
         }}
       />
-      <Typography
-        sx={{
-          width: "500px",
-        }}
-      >
-        {typedAnswer}
-      </Typography>
+      {chat.map((message) => (
+        <Box key={message.id} className={styles.messageContainer}>
+          <Typography className={styles.message} sx={{}}>
+            {message.message}
+          </Typography>
+        </Box>
+      ))}
     </Box>
   );
 };
