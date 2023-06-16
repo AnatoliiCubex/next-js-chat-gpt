@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 import {
   Box,
@@ -15,8 +15,6 @@ import classNames from "classnames";
 
 export const HomePageComponent = () => {
   const [question, setQuestion] = useState("");
-  const [answer, setAnswer] = useState("");
-  const [typedAnswer, setTypedAnswer] = useState("");
   const [chat, setChat] = useState<Chat>([]);
 
   const handleSendQuestion = async () => {
@@ -36,7 +34,6 @@ export const HomePageComponent = () => {
       res.json()
     );
 
-    setAnswer(response.content);
     setChat((prev) => [
       ...prev,
       {
@@ -46,37 +43,6 @@ export const HomePageComponent = () => {
       },
     ]);
   };
-
-  useEffect(() => {
-    let currentIndex = 0;
-    let typingTimer: ReturnType<typeof setTimeout>;
-
-    const typeAnswer = () => {
-      if (currentIndex < answer.length) {
-        setTypedAnswer(
-          (prevTypedAnswer) => prevTypedAnswer + answer[currentIndex]
-        );
-        currentIndex++;
-        typingTimer = setTimeout(typeAnswer, 50); // Adjust the typing speed here
-      }
-    };
-
-    const startTypingEffect = () => {
-      if (answer && answer !== typedAnswer) {
-        setTypedAnswer("");
-        currentIndex = 0;
-        typingTimer = setTimeout(typeAnswer, 50); // Start typing immediately
-      }
-    };
-
-    const clearTypingEffect = () => {
-      clearTimeout(typingTimer);
-    };
-
-    startTypingEffect();
-
-    return clearTypingEffect;
-  }, [answer]);
 
   return (
     <Box className={styles.homePage}>
